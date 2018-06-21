@@ -3,10 +3,11 @@
 @section('content')
     <div class="main main-list">
         <div class="main-row">
-
+          <div class="success">
             @if(Session::has('success'))
                 <p>{{ Session::get('success') }}</p>
-            @endif 
+            @endif
+          </div> 
 
             <div class="login-form">
                 <h2> List of Users </h2>

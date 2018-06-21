@@ -154,4 +154,9 @@ a{
 .table{
     color: white;
 }
-
+.error{
+    color: red;
+}
+.success{
+    color: orange;
+}

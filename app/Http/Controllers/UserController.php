@@ -9,6 +9,9 @@ use App\User;
 
 class UserController extends Controller
 {
+
+	public $public_folder = "uploads";
+
 	//function for login view
 	public function login(){
 		return view('auth/login');
@@ -36,14 +39,52 @@ class UserController extends Controller
 	public function saveData(Request $request)
 	{
 		$userdata = new Userdata();
-        $data = $this->validate($request, [
+       $this->validate($request, [
             'description'=>'required',
-            'file'=> 'required',
+            'file'=> 'required|mimes:png,jpg,jpeg',
             'user_id'=> 'required'
         ]);
+
+        $img = $request->file;
+
+        $imgName = $img->getClientOriginalName();
+
+        $img->move(public_path($this->public_folder), $imgName);
        
+        $data =  [
+        	'description' => $request['description'],
+        	'file'		=>	$imgName,
+        	'user_id'	=>	$request['user_id']
+        ];
+
         $userdata->userData($data);
 
         return redirect()->route('home')->with('success',"User comment has been added");
-	}  
+	}
+	// function to delete Data against User
+	public function deleteData($id)
+	{
+		$userid = $id;
+		$user = Userdata::where('id', $id)->delete();
+		return redirect()->route('home')->with('success',"Deleted Successfully");
+	}
+
+
+	public function saveImage(Request $req)
+	{
+		dd($req);
+	}
+
+
+	public function delImg(Request $req)
+	{
+		$id = $req->key;
+
+		$user = Userdata::find($id);
+
+		if($user->delete())
+		{
+			return response()->json(["status" => "200"]);
+		}
+	}
 }

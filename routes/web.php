@@ -15,4 +15,15 @@ Auth::routes();
 
 Route::get('/', 'UserController@showUsers')->name('home');
 Route::get('profile/{name}', 'UserController@userProfile');
-Route::get('/save','UserController@saveData');
+Route::post('/save','UserController@saveData');
+Route::get('delete/{id}', 'UserController@deleteData');
+
+Route::post('/saveImg', [
+	'uses'	=>	'UserController@saveImage',
+	'as'	=>	'saveImg'
+]);
+
+Route::post('/delImg', [
+	'uses'	=>	'UserController@delImg',
+	'as'	=>	'delImg'
+]);
